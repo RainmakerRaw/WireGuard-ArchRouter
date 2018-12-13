@@ -12,10 +12,15 @@ Install the latest Arch Linux, following the Arch Wiki's installation guide if n
 I also assume that as part of that process you have set up your local network interfaces using netctl profiles (which live in /etc/netctl), and then enabled and started them. I'm using a repurposed Dell Optiplex 7010 from eBay with an additional low profile Intel Pro 1000 VT quad port server NIC, so my netctl profiles are /etc/netctl/WAN, ./LAN, and ./DMZ. They are enabled and started like this:
 
 netctl enable eno1 #WAN
+
 netctl enable enp3s0f0 #LAN
+
 netctl enable enp3s0f1 #DMZ
+
 netctl start emo1
+
 netctl start en3ps0f0
+
 netctl start en3ps0f1
 
 In future netctl will bring up and handle the interfaces by itself. 
