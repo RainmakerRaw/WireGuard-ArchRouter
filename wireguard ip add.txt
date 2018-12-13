@@ -1,7 +1,0 @@
-ip link add dev azirevpn-uk1 type wireguard
-
-ip address add dev azirevpn-uk1 10.20.xx.xx/19
-
-wg setconf azirevpn-uk1 /etc/wireguard/azirevpn-uk1.conf
-
-ip link set up dev azirevpn-uk1
