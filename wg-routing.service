@@ -1,3 +1,4 @@
+#An example systemd service, which will execute our script to bring up the WireGuard VPN interface, add the VPN routing table, and set its routes.
 [Unit]
 After=network.target
 
