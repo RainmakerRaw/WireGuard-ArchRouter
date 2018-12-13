@@ -71,6 +71,16 @@ If for any reason you want/need to restart your tunnel, you can just issue /root
 
 systemctl restart wg-up.service
 
+If you want to see the status of your WireGuard VPN tunnel you can always issue the ever-useful command
+
+wg
+
+It's as simple as that. To test that things are working nicely, you can do the following *from the router itself*:
+
+curl ipinfo.io #Should return WAN IP
+
+curl ipinfo.io --interface azirevpn-uk1 #Should return AzireVPN's IP
+
 We're all done! Now you should have a barebones, fully functional, powerful, stateful firewall with (D/S)NAT, WireGuard, network segregation between LAN and servers/CCTV/etc for security, and all the great tools (like iperf, traceroute, dig, ping, glances, etc) that Linux affords. My own little Arch Router has been up for several days now. I have two switches (one coming out of the LAN interface and one coming out of the DMZ interface), and my Unifi UAC AP PRO access point is plugged into the DMZ zone's PoE switch. The AP runs an SSID for us to use, and a captive portal for guests to our home, which is cut off from everything and everyone else. This provides convenience and security in one step. If we have a gathering (eg Christmas) I just put up a piece of paper with the WiFi SSID and password, and the relevant  QR code underneath so people can just hop onto the guest WiFI without asking.
 
 So far on my 'router', the average load is 0.00 (lol). It puts through my full ISP line speed (380Mbs) without breaking double digits CPU usage (even via WireGuard - which spreads the load beautifully over the i7's 8 threads), and is using about 125MB RAM. Overkill? Certainly. Fun? Absolutely. Future-proof? Hell yeah. Try it out and let me know how you find it!
