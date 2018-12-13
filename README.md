@@ -1,9 +1,9 @@
 # WireGuard-ArchRouter
 How to make a fully functional Arch Linux edge router, with stateful firewall and NAT, running WireGuard VPN.
 
-This readme will be fleshed out over the coming day(s) as I get the opportunity, and will ultimately include full copies of all referenced config files etc. For now, anyone who is attempting this project should have a fair understanding of Linux anyway, so I assume you know how to parse my cut down config example files and amend your own (full versions) to match.
+This readme has been cobbled together in an hour because I didn't want to just post my reference files without comment. This guide will be fleshed out and formatted nicely over the coming day(s) as I get the opportunity, and will ultimately include full copies of all referenced config files etc. For now, anyone who is attempting this project should have a fair understanding of Linux anyway, so I assume you know how to parse my cut down config example files and amend your own (full versions) to match.
 
-I also start this guide by assuming that you are running the latest Arch Linux and using AzireVPN as your VPN provider. You have at least three physical interfaces - WAN, LAN and DMZ (for your NAS/servers). You can amend this guide easily to account for any differences.
+I also start this guide by assuming that you are running the latest Arch Linux, you are using AzireVPN as your VPN provider, and you have at least three physical interfaces - WAN, LAN and DMZ (for your NAS/servers). You can amend this guide easily to account for any differences.
 
 For now, in essence:
 
@@ -29,13 +29,17 @@ Now the basics are out of the way, we install the basic requirements for this pr
 
 pacman -S dhcp shorewall dnscrypt-proxy linux-headers wireguard-tools wireguard-dkms jq resolvconf iperf3 glances openssh
 
-After a reboot, put your AzireVPN (or other) .conf file in /etc/wireguard. Edit it to remove references to DNS, to match the example in this repo.
+After a reboot, put your AzireVPN (or other) .conf file in /etc/wireguard. Edit it to remove references to DNS, add your private key and your provider's public key and endpoint, and have it wind up matching the example in this repo.
 
 Next, edit /etc/dnscrypt-proxy/dnscrypt-proxy.toml to enable the service on your interfaces (e.g. 127.0.0.1:53, 192.168.1.1:53, 192.168.2.1:53). Enable whichever servers you prefer, for example Cloudflare and Quad9 - or whatever. Then enable dnscrypt-proxy:
 
 systemctl enable --now dnscrypt-proxy
 
-Next we need to tell Shorewall what to do. Edit the files in the /etc/shorewall directory as per the conf files in this repo. In essence, you need to edit the ./interfaces file to list your interfaces by name, outline your network segments in ./zones, tell Shorewall who can talk with whom using ./policy and finally set up ./rules with any necessary changes. My example config file in this repo gives examples for allowing SSH, and using DNAT to allow local LAN and DMZ clients to access servers on local machines (without having to hairpin back through the firewall). Once this is done, we can enable and start shorewall:
+Next we need to tell Shorewall what to do. For simplicity's sake, first copy over the Three Interfaces example from the Shorewall documentation like this:
+
+cp /usr/share/doc/shorewall/Samples/three-interfaces/* /etc/shorewall/
+
+Edit the files in the /etc/shorewall directory as per the conf files in this repo. In essence, you need to edit the ./interfaces file to list your interfaces by name, outline your network segments in ./zones, tell Shorewall who can talk with whom using ./policy and finally set up ./rules with any necessary changes. My example rules config file in this repo gives examples for allowing SSH from local clients only, and using DNAT to allow local people on the internet as well as LAN and DMZ clients to access servers on local machines (without having to hairpin back through the firewall). Once this is done, we can enable and start shorewall:
 
 systemctl enable --now shorewall
 
@@ -45,11 +49,11 @@ systemctl enable --now dhcpd4
 
 At this point, you may wish to configure and enable SSH so you can administer your router from elsewhere on your network. This is especially useful if (likely) you are to run the router headless. If you get stuck, check out the Arch SSH wiki, but in essence just edit /etc/ssh/sshd.conf to uncomment the port and to allow root login if required (only do this if not allowing WAN access to SSH, and even then it's probably a bad idea). Hardening SSH is beyond the scope of this guide (for now).
 
-Now we have the ability to form WireGuard tunnels, dnscrypt-proxy to resolve DNS for local clients, dhcpd to issue and track IP addresses, and Shorewall to keep everything running smoothly and safely. I don't use the 'wg-quick' utility as it overwrites rules and makes its own tables, which in my particular case intefered with my preferred routing for my DMZ subnet. Instead I made two shell scripts, 'wg-up.sh' and 'wg-down.sh', which are fairly self-explanatory. 
+Now we have the ability to form WireGuard tunnels, dnscrypt-proxy to resolve DNS for local clients, dhcpd to issue and track IP addresses, and Shorewall to keep everything running smoothly and safely. With regards to bringing up and down the WireGuard tunnel itself, I don't use the 'wg-quick' utility as it overwrites rules and makes its own tables - which in my particular case intefered with my preferred routing for my DMZ subnet. Instead I made two very simple shell scripts, 'wg-up.sh' and 'wg-down.sh', which are fairly self-explanatory. 
 
 Specifically, 'wg-up.sh' brings up a WireGuard interface to AzireVPN (in my case). It then adds a table called 'VPN' to iproute2's rt_tables, and adds rules to it so that all traffic on my LAN subnet looks up this table. The rules in this table say:
 
-ip rule add unicast iif {WAN interface, eg enp3s0f0} table vpn
+ip rule add unicast iif {WAN interface} table vpn
 ip route add default dev azirevpn-uk1 via 10.xx.xx.xx table vpn
 ip route add 192.168.2.0/24 via 192.168.2.1 dev {LAN interface} table vpn
 
