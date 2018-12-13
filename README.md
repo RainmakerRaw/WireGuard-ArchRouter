@@ -56,4 +56,4 @@ To make the systemd service, make a file called wg-up.service (or whatever) and 
 
 systemctl enable --now wg-up.service
 
-Now you should have a barebones, fully functional, powerful, stateful firewall with (D/S)NAT, WireGuard, network segregation between LAN and servers/CCTV/etc for security, and all the great tools (like iperf, traceroute, dig, ping, glances, etc) that Linux affords.
+Now you should have a barebones, fully functional, powerful, stateful firewall with (D/S)NAT, WireGuard, network segregation between LAN and servers/CCTV/etc for security, and all the great tools (like iperf, traceroute, dig, ping, glances, etc) that Linux affords. My own little Arch Router has been up for several days now. Average load is 0.00 (lol) and it puts through my full ISP line speed (380Mbs) without breaking double digits CPU usage (even via WireGuard) and is using about 125MB RAM. Overkill? Certainly. Fun? Absolutely. Future-proof? Hell yeah.
