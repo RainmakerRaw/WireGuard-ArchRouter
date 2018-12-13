@@ -54,7 +54,9 @@ Now we have the ability to form WireGuard tunnels, dnscrypt-proxy to resolve DNS
 Specifically, 'wg-up.sh' brings up a WireGuard interface to AzireVPN (in my case). It then adds a table called 'VPN' to iproute2's rt_tables, and adds rules to it so that all traffic on my LAN subnet looks up this table. The rules in this table say:
 
 ip rule add unicast iif {WAN interface} table vpn
+
 ip route add default dev azirevpn-uk1 via 10.xx.xx.xx table vpn
+
 ip route add 192.168.2.0/24 via 192.168.2.1 dev {LAN interface} table vpn
 
 This basically means if you're on my LAN you get sent to the WireGuard tunnel and everything is protected by the VPN. That is, however, unless you wish to access a machine on the DMZ subnet (192.168.2.0/24). In this case you're sent there directly by the router, bypassing the VPN. Everyone else (the firewall, the DMZ zone clients) get sent directly over WAN and bypass the tunnel. This was necessary for me to keep my servers running properly (Plex, SABnzbd, Sonarr etc) and be able to reach them using mydomain.com over the internet.
