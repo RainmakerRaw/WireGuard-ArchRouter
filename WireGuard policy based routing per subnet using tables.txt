@@ -1,0 +1,31 @@
+# Add a VPN routing table:
+
+echo "10 vpn" >> /etc/iproute2/rt_tables
+
+# Next, add the following policy rule for the LAN interface you want to route via VPN:
+
+ip rule add unicast iif enp3s0f0 table vpn
+
+# This rule effectively says "if the packet comes in on interface ens192, use routing table vpn".
+
+# You can check the rules with ip rule show:
+
+# ip rule show
+# 0:      from all lookup local 
+# 32765:  from all iif eth1 lookup vpn 
+# 32766:  from all lookup main 
+# 32767:  from all lookup default
+
+#The rules are applied in ascending order, until a rule matches. If a packet is received on interface ens192, rule 32765 matches, else the next rules are tried.
+
+#You can now add routes to the vpn routing table. For example, to add a default route (from LAN subnet on ens192) to your tunnel:
+
+ip route add default dev azirevpn-uk1 via 10.20.13.71 table vpn
+ip route add 192.168.2.0/24 via 192.168.2.1 dev enp3s0f1 table vpn
+
+# To print the vpn routing table, use
+
+ip route show table vpn
+
+####################################################################
+After reboots you need to add the second two commands again.
