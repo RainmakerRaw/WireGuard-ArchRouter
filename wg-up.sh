@@ -1,3 +1,5 @@
+# A script to bring up the WireGuard VPN interface, and set up the VPN routing table (with rules for the correct subnet).
+
 #!/usr/bin/bash
 ip link add dev azirevpn-uk1 type wireguard
 ip address add dev azirevpn-uk1 10.20.xx.xx/19
