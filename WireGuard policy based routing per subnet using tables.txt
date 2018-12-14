@@ -1,4 +1,4 @@
-# This allows you to tunnel only one subnet (physical interface) and leave the other - i.e. DMZ - attached directly to the internet.
+# This allows you to tunnel only one subnet (physical interface) and leave the other - i.e. DMZ - attached directly to the internet. 
 # It's not necessary to do this manually as the wg-up.sh script does it for us. I add this for reference, and to show how it works.
 # First, add a VPN routing table:
 
