@@ -1,0 +1,46 @@
+DNS(ACCEPT)     loc             $FW
+DNS(ACCEPT)     dmz             $FW
+#
+#       Accept WireGuard
+ACCEPT          net             $FW             udp     51820
+#       Accept SSH connections from the local network to the firewall and DMZ servers
+#
+SSH(ACCEPT)     loc             $FW
+SSH(ACCEPT)     loc             dmz
+#
+#       DMZ DNS access to the Internet
+#
+DNS(ACCEPT)     dmz             net
+
+
+# Drop Ping from the "bad" net zone.
+
+Ping(DROP)     net             $FW
+
+#
+#       Make ping work bi-directionally between the dmz, net, Firewall and local zone
+#       (assumes that the loc-> net policy is ACCEPT).
+#
+
+Ping(ACCEPT)    loc             $FW
+Ping(ACCEPT)    dmz             $FW
+Ping(ACCEPT)    net             $FW
+Ping(ACCEPT)    loc             dmz
+Ping(DROP)      dmz             loc
+Ping(ACCEPT)    dmz             net
+
+ACCEPT          $FW             net             icmp
+ACCEPT          $FW             loc             icmp
+ACCEPT          $FW             dmz             icmp
+
+# Uncomment this if using Proxy ARP and static NAT and you want to allow ping from
+# the net zone to the dmz and loc
+
+#Ping(ACCEPT)    net             dmz
+#Ping(ACCEPT)    net             loc
+
+# DNAT port forwards - add more as required, following this template
+
+DNAT            loc     dmz:192.168.2.5         tcp     80    -       [WAN_IP]
+DNAT            dmz     dmz:192.168.2.5         tcp     80    -       [WAN_IP]
+DNAT            net     dmz:192.168.2.5:80		tcp     80

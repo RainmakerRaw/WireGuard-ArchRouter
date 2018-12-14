@@ -1,0 +1,4 @@
+net     NET_IF          tcpflags,dhcp,nosmurfs,routefilter,logmartians,sourceroute=0,physical=eno1
+loc     LOC_IF          tcpflags,dhcp,nosmurfs,routefilter,routeback=1,logmartians,physical=enp3s0f0
+dmz     DMZ_IF          tcpflags,dhcp,nosmurfs,routefilter,routeback=1,logmartians,physical=enp3s0f1
+wg      azirevpn-uk1
