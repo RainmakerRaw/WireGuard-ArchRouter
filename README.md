@@ -39,7 +39,7 @@ Next we need to tell Shorewall what to do. For simplicity's sake, first copy ove
 
 cp /usr/share/doc/shorewall/Samples/three-interfaces/* /etc/shorewall/
 
-Edit the files in the /etc/shorewall directory as per the conf files in this repo. In essence, you need to edit the ./interfaces file to list your interfaces by name, outline your network segments in ./zones, tell Shorewall who can talk with whom using ./policy and finally set up ./rules with any necessary changes. My example rules config file in this repo gives examples for allowing SSH from local clients only, and using DNAT to allow local people on the internet as well as LAN and DMZ clients to access servers on local machines (without having to hairpin back through the firewall). Once this is done, we can enable and start shorewall:
+Edit the files in the /etc/shorewall directory as per the conf files in this repo. In essence, you need to edit the ./interfaces file to list your interfaces by name, outline your network segments in ./zones, tell Shorewall who can talk with whom using ./policy and finally set up ./rules with any necessary changes. My example rules config file in this repo gives examples for allowing SSH from local clients only, and using DNAT to allow people on the internet as well as LAN and DMZ clients to access servers on local machines (without having to hairpin back through the firewall). Once this is done, we can enable and start shorewall:
 
 systemctl enable --now shorewall
 
@@ -57,7 +57,7 @@ ip rule add unicast iif {WAN interface} table vpn
 
 ip route add default dev azirevpn-uk1 via 10.xx.xx.xx table vpn
 
-ip route add 192.168.2.0/24 via 192.168.2.1 dev {LAN interface} table vpn
+ip route add 192.168.2.0/24 via 192.168.2.1 dev {DMZ interface} table vpn
 
 This basically means if you're on my LAN you get sent to the WireGuard tunnel and everything is protected by the VPN. That is, however, unless you wish to access a machine on the DMZ subnet (192.168.2.0/24). In this case you're sent there directly by the router, bypassing the VPN. Everyone else (the firewall, the DMZ zone clients) get sent directly over WAN and bypass the tunnel. This was necessary for me to keep my servers running properly (Plex, SABnzbd, Sonarr etc) and be able to reach them using mydomain.com over the internet.
 
