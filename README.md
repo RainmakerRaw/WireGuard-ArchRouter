@@ -39,7 +39,9 @@ Next we need to tell Shorewall what to do. For simplicity's sake, first copy ove
 
 cp /usr/share/doc/shorewall/Samples/three-interfaces/* /etc/shorewall/
 
-Edit the files in the /etc/shorewall directory as per the conf files in this repo. In essence, you need to edit the ./interfaces file to list your interfaces by name, outline your network segments in ./zones, tell Shorewall who can talk with whom using ./policy and finally set up ./rules with any necessary changes. My example rules config file in this repo gives examples for allowing SSH from local clients only, and using DNAT to allow people on the internet as well as LAN and DMZ clients to access servers on local machines (without having to hairpin back through the firewall). Once this is done, we can enable and start shorewall:
+Edit the files in the /etc/shorewall directory as per the conf files in this repo. In essence, you need to edit the ./interfaces file to list your interfaces by name, outline your network segments in ./zones, tell Shorewall who can talk with whom using ./policy and set up ./rules with any necessary changes. Finally we set the ./snat file to tell Shorewall that our LAN subnet should MASQUERADE via our VPN and the DMZ zone should MASQUERADE via the WAN IP.
+
+My example rules config file in this repo gives examples for allowing SSH from local clients only, and using DNAT to allow people on the internet as well as LAN and DMZ clients to access servers on local machines (without having to hairpin back through the firewall). Once this is done, we can enable and start shorewall:
 
 systemctl enable --now shorewall
 
