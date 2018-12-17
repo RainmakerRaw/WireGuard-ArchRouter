@@ -39,8 +39,8 @@ ACCEPT          $FW             dmz             icmp
 #Ping(ACCEPT)    net             dmz
 #Ping(ACCEPT)    net             loc
 
-# DNAT port forwards - add more as required, following this template
+# DNAT port forwards - add more as required, following this template. It's necessary to add the loc and dmz entries to allow local clients to also access your servers (via local IP or domain name) from inside the network. Adding only the 'net' entry would only allow access to people outside your network, unless you enable hairpin NAT. This solution is better, as hairpin NAT necessitates putting local traffic through the firewall as though it came from outside.
 
 DNAT            loc     dmz:192.168.2.5         tcp     80    -       [WAN_IP]
 DNAT            dmz     dmz:192.168.2.5         tcp     80    -       [WAN_IP]
-DNAT            net     dmz:192.168.2.5:80		tcp     80
+DNAT            net     dmz:192.168.2.5:80		  tcp     80
