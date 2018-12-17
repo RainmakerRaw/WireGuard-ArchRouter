@@ -9,11 +9,9 @@ loc     dmz             ACCEPT
 loc     wg              ACCEPT
 
 dmz     net             ACCEPT
-dmz     loc             ACCEPT
 dmz     wg              ACCEPT
 
 wg      $FW             ACCEPT
-wg      dmz             ACCEPT
 
 net     all             DROP            info
 
