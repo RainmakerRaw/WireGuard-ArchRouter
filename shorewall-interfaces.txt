@@ -1,4 +1,4 @@
-net     NET_IF          tcpflags,dhcp,nosmurfs,routefilter,logmartians,sourceroute=0,physical=eno1
-loc     LOC_IF          tcpflags,dhcp,nosmurfs,routefilter,routeback=1,logmartians,physical=enp3s0f0
-dmz     DMZ_IF          tcpflags,dhcp,nosmurfs,routefilter,routeback=1,logmartians,physical=enp3s0f1
+net     NET_IF          tcpflags,dhcp,nosmurfs,routefilter,logmartians,sourceroute=0,physical=[WAN interface]
+loc     LOC_IF          tcpflags,dhcp,nosmurfs,routefilter,routeback=1,logmartians,physical=[LAN interface]
+dmz     DMZ_IF          tcpflags,dhcp,nosmurfs,routefilter,routeback=1,logmartians,physical=[DMZ interface]
 wg      azirevpn-uk1
