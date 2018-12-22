@@ -9,7 +9,6 @@ loc     dmz             ACCEPT
 loc     wg              ACCEPT
 
 dmz     net             ACCEPT
-dmz     wg              ACCEPT
 
 wg      $FW             ACCEPT
 
