@@ -55,7 +55,7 @@ Now we have the ability to form WireGuard tunnels, dnscrypt-proxy to resolve DNS
 
 Specifically, 'wg-up.sh' brings up a WireGuard interface to AzireVPN (in my case). It then adds a table called 'VPN' to iproute2's rt_tables, and adds rules to it so that all traffic on my LAN subnet looks up this table. The rules in this table say:
 
-ip rule add unicast iif {WAN interface} table vpn
+ip rule add unicast iif {LAN interface} table vpn
 
 ip route add default dev azirevpn-uk1 via 10.xx.xx.xx table vpn
 
