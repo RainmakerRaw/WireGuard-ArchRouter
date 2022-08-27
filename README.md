@@ -1,4 +1,4 @@
-# WireGuard Edge Router Using Arch Linux
+# WireGuard x86 edge router, using Arch Linux
 How to make a fully functional Arch Linux edge router, with stateful firewall and NAT, running WireGuard VPN.
 
 This readme has been cobbled together in an hour because I didn't want to just post my reference files without comment. This guide will be fleshed out and formatted nicely over the coming day(s) as I get the opportunity **[It never was, but I'm glad some people found it useful!]**, and will ultimately include full copies of all referenced config files etc. For now, anyone who is attempting this project should have a fair understanding of Linux anyway, so I assume you know how to parse my cut down config example files and amend your own (full versions) to match.
