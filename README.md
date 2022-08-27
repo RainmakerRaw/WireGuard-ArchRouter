@@ -121,3 +121,4 @@ So far on my 'router', the average load is 0.00 (lol). It puts through my full I
 
 ## Update
 This router ran a couple of years for me, before I moved to vanilla BSD. It shovelled WireGuard over gigabit just as well as it did my old 380Mbps plan, and never went wrong. Kudos. 
+These days, I'm on gigabit WAN and have a single x86 BSD edge router, a managed L2/L3 core switch, a Ruckus R710 Wireless AP managing guest isolation, and one flat subnet. I'm happy to see this guide helped a few people achieve similar goals. 
